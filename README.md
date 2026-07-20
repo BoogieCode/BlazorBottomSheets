@@ -2,7 +2,7 @@
 
 An iOS / Google Maps-style **bottom sheet** component for Blazor. Touch-friendly drag gestures, snap points, velocity-based flicks, backdrop, and CSS-variable theming — with no JavaScript setup required.
 
-![BlazorBottomSheets in action](assets/bottomsheet-demo.gif)
+![BlazorBottomSheets in action](https://raw.githubusercontent.com/BoogieCode/BlazorBottomSheets/master/assets/bottomsheet-demo.gif)
 
 Works in Blazor WebAssembly, Blazor Server, and Blazor Web App interactive render modes (.NET 10).
 

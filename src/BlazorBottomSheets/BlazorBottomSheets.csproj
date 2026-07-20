@@ -14,7 +14,8 @@
     <PackageTags>blazor;razor;components;bottom-sheet;bottomsheet;drawer;modal;sheet;mobile;ui</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/boogiecode/blazorbottomsheets</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/BoogieCode/BlazorBottomSheets</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BoogieCode/BlazorBottomSheets</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
