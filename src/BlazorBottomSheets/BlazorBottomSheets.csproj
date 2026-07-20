@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>BlazorBottomSheets</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>boogiecode</Authors>
+    <Description>iOS/Google Maps-style bottom sheet component for Blazor: snap points, drag gestures with velocity-based flicks, backdrop, Escape/backdrop dismissal, and CSS-variable theming. Works in Blazor WebAssembly, Server, and Web App interactive render modes.</Description>
+    <PackageTags>blazor;razor;components;bottom-sheet;bottomsheet;drawer;modal;sheet;mobile;ui</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/boogiecode/blazorbottomsheets</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\assets\bottomsheet-demo.gif" Pack="true" PackagePath="assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.8" />
+  </ItemGroup>
+
+</Project>

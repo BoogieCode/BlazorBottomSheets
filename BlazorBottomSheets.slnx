@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BlazorBottomSheets/BlazorBottomSheets.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/BlazorBottomSheets.Demo/BlazorBottomSheets.Demo.csproj" />
+  </Folder>
+</Solution>

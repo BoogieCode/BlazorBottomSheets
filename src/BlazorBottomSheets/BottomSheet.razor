@@ -1,0 +1,39 @@
+@if (_state != SheetState.Closed)
+{
+    <div @ref="_containerEl" class="bbs-container @Class" style="@ContainerStyleValue" @attributes="AdditionalAttributes">
+        @if (ShowBackdrop)
+        {
+            <div class="bbs-backdrop @BackdropClass"></div>
+        }
+        <div @ref="_sheetEl"
+             class="bbs-sheet @(IsSnapMode ? "bbs-snap" : "bbs-auto") @SheetClass"
+             style="@SheetStyleValue"
+             role="dialog"
+             aria-modal="true"
+             aria-label="@AriaLabel"
+             tabindex="-1">
+            @if (ShowHandle)
+            {
+                <div class="bbs-handle-area">
+                    @if (HandleContent is not null)
+                    {
+                        @HandleContent
+                    }
+                    else
+                    {
+                        <div class="bbs-handle"></div>
+                    }
+                </div>
+            }
+            @if (HeaderContent is not null)
+            {
+                <div class="bbs-header">@HeaderContent</div>
+            }
+            <div @ref="_contentEl" class="bbs-content @ContentClass">@ChildContent</div>
+            @if (FooterContent is not null)
+            {
+                <div class="bbs-footer">@FooterContent</div>
+            }
+        </div>
+    </div>
+}

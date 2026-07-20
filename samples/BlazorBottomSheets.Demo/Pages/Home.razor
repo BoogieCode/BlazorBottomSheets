@@ -1,0 +1,154 @@
+@page "/"
+
+<PageTitle>BlazorBottomSheets Demo</PageTitle>
+
+<h1>BlazorBottomSheets</h1>
+<p class="text-muted">Drag the sheets with mouse or touch (use DevTools device emulation for touch).</p>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Snap-point sheet</h5>
+                <p class="card-text">Snap points at 25%, 50% and 90% of the viewport. Long scrollable list inside.</p>
+                <button class="btn btn-primary" @onclick="() => _snapOpen = true">Open</button>
+                <button class="btn btn-outline-secondary" @onclick="RapidToggle">Rapid toggle (race test)</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Auto-height sheet</h5>
+                <p class="card-text">No snap points — sized to its content, drag down to dismiss.</p>
+                <button class="btn btn-primary" @onclick="() => _autoOpen = true">Open</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Options</h5>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="handle" @bind="_showHandle" /><label class="form-check-label" for="handle">ShowHandle</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="backdrop" @bind="_showBackdrop" /><label class="form-check-label" for="backdrop">ShowBackdrop</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="backdropClick" @bind="_closeOnBackdropClick" /><label class="form-check-label" for="backdropClick">CloseOnBackdropClick</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="escape" @bind="_closeOnEscape" /><label class="form-check-label" for="escape">CloseOnEscape</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="drag" @bind="_enableDrag" /><label class="form-check-label" for="drag">EnableDrag</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="swipeDismiss" @bind="_allowSwipeDismiss" /><label class="form-check-label" for="swipeDismiss">AllowSwipeDismiss</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="pinFooter" @bind="_pinFooter" /><label class="form-check-label" for="pinFooter">PinFooter</label></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Event log</h5>
+                <ul class="list-unstyled mb-0 small font-monospace" style="max-height: 12rem; overflow-y: auto;">
+                    @foreach (var entry in _log.AsEnumerable().Reverse())
+                    {
+                        <li>@entry</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<BottomSheet @ref="_snapSheet"
+             @bind-IsOpen="_snapOpen"
+             SnapPoints="new double[] { 0.25, 0.5, 0.9 }"
+             DefaultSnapPoint="0.5"
+             ShowHandle="_showHandle"
+             ShowBackdrop="_showBackdrop"
+             CloseOnBackdropClick="_closeOnBackdropClick"
+             CloseOnEscape="_closeOnEscape"
+             EnableDrag="_enableDrag"
+             AllowSwipeDismiss="_allowSwipeDismiss"
+             PinFooter="_pinFooter"
+             AriaLabel="Nearby places"
+             OnOpened="@(() => Log("snap sheet opened"))"
+             OnClosed="@(r => Log($"snap sheet closed ({r})"))"
+             OnSnapPointChanged="@(s => Log($"snapped to {s:P0}"))">
+    <HeaderContent>Nearby places</HeaderContent>
+    <ChildContent>
+        <div class="mb-2">
+            <button class="btn btn-sm btn-outline-primary" @onclick="() => _snapSheet!.SnapToAsync(0.25)">25%</button>
+            <button class="btn btn-sm btn-outline-primary" @onclick="() => _snapSheet!.SnapToAsync(0.5)">50%</button>
+            <button class="btn btn-sm btn-outline-primary" @onclick="() => _snapSheet!.SnapToAsync(0.9)">90%</button>
+            <span class="small text-muted ms-2">current: @(_snapSheet?.CurrentSnapPoint?.ToString("P0") ?? "—")</span>
+        </div>
+        <ul class="list-group">
+            @for (var i = 1; i <= 40; i++)
+            {
+                var n = i;
+                <li class="list-group-item">Place @n — scroll me, then pull down from the top</li>
+            }
+        </ul>
+    </ChildContent>
+    <FooterContent>
+        <button class="btn btn-primary w-100" @onclick="() => _snapOpen = false">Done</button>
+    </FooterContent>
+</BottomSheet>
+
+<BottomSheet @bind-IsOpen="_autoOpen"
+             ShowHandle="_showHandle"
+             ShowBackdrop="_showBackdrop"
+             CloseOnBackdropClick="_closeOnBackdropClick"
+             CloseOnEscape="_closeOnEscape"
+             EnableDrag="_enableDrag"
+             AllowSwipeDismiss="_allowSwipeDismiss"
+             AriaLabel="Contact form"
+             OnOpened="@(() => Log("auto sheet opened"))"
+             OnClosed="@(r => Log($"auto sheet closed ({r})"))">
+    <HeaderContent>Get in touch</HeaderContent>
+    <ChildContent>
+        <div class="mb-3">
+            <label class="form-label" for="demo-name">Name</label>
+            <input class="form-control" id="demo-name" placeholder="Jane Doe" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="demo-msg">Message</label>
+            <textarea class="form-control" id="demo-msg" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" @onclick="() => _autoOpen = false">Send</button>
+    </ChildContent>
+</BottomSheet>
+
+@code {
+    private BottomSheet? _snapSheet;
+    private bool _snapOpen;
+    private bool _autoOpen;
+
+    private bool _showHandle = true;
+    private bool _showBackdrop = true;
+    private bool _closeOnBackdropClick = true;
+    private bool _closeOnEscape = true;
+    private bool _enableDrag = true;
+    private bool _allowSwipeDismiss = true;
+    private bool _pinFooter = true;
+
+    private readonly List<string> _log = [];
+
+    private void Log(string message)
+    {
+        _log.Add($"{DateTime.Now:HH:mm:ss.fff}  {message}");
+        if (_log.Count > 50)
+        {
+            _log.RemoveAt(0);
+        }
+    }
+
+    private async Task RapidToggle()
+    {
+        _snapOpen = true;
+        StateHasChanged();
+        await Task.Delay(60);
+        _snapOpen = false;
+        StateHasChanged();
+        await Task.Delay(60);
+        _snapOpen = true;
+    }
+}
